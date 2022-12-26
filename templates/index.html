@@ -1,0 +1,79 @@
+{% include "header.html" %}
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('/static/img/coffee.jpg')">
+<!--  <header class="masthead" style="background-image: url('https://images.unsplash.com/photo-1470092306007-055b6797ca72?ixlib=rb-1.2.1&auto=format&fit=crop&w=668&q=80')">-->
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="site-heading">
+            <h1>Coffee and WiFi</h1>
+            <span class="subheading">Next ideal work space.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        {% for cafe in all_cafes %}
+        <div class="post-preview">
+          <a href="#">
+            <h2 class="post-title">
+              {{cafe.name}}
+            </h2>
+            <h3 class="post-subtitle">
+              {{cafe.location}}
+            </h3>
+            <p>
+            {% if current_user_id in owners: %}
+            <a href="{{url_for('delete_post', post_id=cafe.id) }}">Delete Cafe</a>
+            <a class="edit-link" href="{{url_for('edit_post', post_id=cafe.id) }}">Edit Cafe</a>
+            {% endif %}
+            </p>
+          </a>
+          <img src="{{cafe.img_url}}" width="500" height="400" class="cafe_img">
+          <p class="post-meta">
+            Coffee Price: <b>{{cafe.coffee_price}}</b>
+
+          </p>
+          <p class="post-meta">
+            WiFi: <b>{{"Yes" if cafe.has_wifi else "No"}}</b>
+          </p>
+          <p class="post-meta">
+            Sockets: <b>{{"Yes" if cafe.has_sockets else "No"}}</b>
+          </p>
+          <p class="post-meta">
+            Toilet: <b>{{"Yes" if cafe.has_toilet else "No"}}</b>
+          </p>
+          <p class="post-meta">
+            Number of Seats: <b>{{cafe.seats}}</b>
+          </p>
+          <p class="post-meta">
+            Can Make Video/Audio Calls: <b>{{"Yes" if cafe.can_take_calls else "No"}}</b>
+          </p>
+          <p class="post-meta">
+            Directions: <a href="{{cafe.map_url}}"><b>See It on the Map.</b></a>
+          </p>
+
+        </div>
+        <hr>
+        {% endfor %}
+
+        <!-- New Post -->
+        <div class="clearfix">
+          {% if logged_in: %}
+          <a class="btn btn-primary float-right" href="{{url_for('add_cafe')}}">Add New Cafe</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+
+{% include "footer.html" %}
